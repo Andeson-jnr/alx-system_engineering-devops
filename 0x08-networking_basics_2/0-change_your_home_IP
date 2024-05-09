@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# This script configures DNS settings on an Ubuntu server.
+
+# Check if Docker is installed
+if ! command -v docker &>/dev/null; then
+  echo "Error: Docker not found. Please install Docker before running this script." >&2
+  exit 1
+fi
+
+# Create a Docker container for DNS configuration
+docker run -d --name dns-config -p 53:53/udp --cap-add=NET_ADMIN --restart=always \
+  --dns 127.0.0.2 --dns 8.8.8.8 andersonjr2/dns-proxy-server
+
+# Check if the container is running
+if [ "$(docker inspect -f '{{.State.Running}}' dns-config)" != "true" ]; then
+  echo "Error: Failed to start the DNS configuration container." >&2
+  exit 1
+fi
+
+echo "DNS configuration completed successfully."
