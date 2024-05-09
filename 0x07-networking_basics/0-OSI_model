@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 # This script provides answers to specific questions.
-echo "1"
 echo "2"
-echo "3"
+echo "2"
