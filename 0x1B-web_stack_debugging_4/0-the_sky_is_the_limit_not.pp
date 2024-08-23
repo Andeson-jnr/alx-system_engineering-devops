@@ -1,4 +1,14 @@
-exec {'modify max open files limit setting':
-  command => 'sed -i "s/15/4090/" /etc/default/nginx && sudo service nginx restart',
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games',
+# Testing how well our web server setup featuring Nginx is doing under pressure
+
+# increaing the amount of requests
+exec { 'fix--for-nginx':
+  command => 'sed -i "s/15/4096/" /etc/default/nginx',
+  path    => '/usr/local/bin/:/bin'
+}
+
+
+#restart Nginx
+exec { 'nginx-restart':
+  command => 'nginx restart',
+  path    => '/etc/init.d/'
 }
